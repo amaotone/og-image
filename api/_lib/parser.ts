@@ -32,7 +32,6 @@ export function parseRequest(req: IncomingMessage) {
     theme: theme === "dark" ? "dark" : "light",
     md: md === "1" || md === "true",
     fontSize: fontSize || "60px",
-    fontFamily: "Noto Serif JP",
     images: getArray(images),
     widths: getArray(widths),
     heights: getArray(heights),

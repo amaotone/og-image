@@ -6,33 +6,18 @@ const twemoji = require("twemoji");
 const twOptions = { folder: "svg", ext: ".svg" };
 const emojify = (text: string) => twemoji.parse(text, twOptions);
 
-const mincho = readFileSync(
-  `${__dirname}/../_fonts/NotoSerifJP-Regular.otf`
-).toString("base64");
 const bg = readFileSync(`${__dirname}/../_bg/ichibunichie.jpg`).toString(
   "base64"
 );
 
-function getCss(theme: string, fontSize: string, fontFamily: string) {
-  let background = "white";
-  let foreground = "black";
-
-  if (theme === "dark") {
-    background = "black";
-    foreground = "white";
-  }
+function getCss(fontSize: string) {
   return ` 
-    @font-face {
-        font-family: 'Noto Serif JP';
-        font-style:  normal;
-        font-weight: normal;
-        src: url(data:font/otf;charset=utf-8;base64,${mincho}) format('opentype');
-    }
+    @import url('https://fonts.googleapis.com/css?family=Noto+Serif+JP');
 
     body {
-        background: ${background};
         background-image: url(data:image/jpg;base64,${bg});
         background-size: 1200px 630px;
+        background-position: center;
         height: 100vh;
         display: flex;
         text-align: center;
@@ -76,24 +61,24 @@ function getCss(theme: string, fontSize: string, fontFamily: string) {
     }
     
     .heading {
-        font-family: '${sanitizeHtml(fontFamily)}';
+        font-family: 'Noto Serif JP';
         font-size: ${sanitizeHtml(fontSize)};
         font-style: normal;
         opacity: 0.8;
-        color: ${foreground};
+        color: black;
         line-height: 1.5;
     }`;
 }
 
 export function getHtml(parsedReq: ParsedRequest) {
-  const { text, theme, md, fontSize, fontFamily } = parsedReq;
+  const { text, md, fontSize } = parsedReq;
   return `<!DOCTYPE html>
 <html>
     <meta charset="utf-8">
     <title>Generated Image</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        ${getCss(theme, fontSize, fontFamily)}
+        ${getCss(fontSize)}
     </style>
     <body>
       <div class="heading">
